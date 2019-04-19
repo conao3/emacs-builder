@@ -28,4 +28,5 @@ jobs:
       script:
         - uname -a
         - sw_vers
+        - ls -la /tmp
         - make
