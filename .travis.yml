@@ -30,4 +30,5 @@ jobs:
         - sw_vers
         - ls -la /
         - ls -la /tmp/
+        - ls -la /tmp/emacs/
         - make
