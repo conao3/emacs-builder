@@ -19,13 +19,15 @@ uninstall:
 
 ##############################
 
-dist:
+dist: emacs.tar.gz
+emacs.tar.gz:
+	echo emacs > $@
 test:
 
 ##############################
 
-push:
-	scp -rv -i /tmp/.ssh/rsync-files-conao3_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' ../emacs-builder conao3@files.conao3.com:~/www/files/
+push: emacs.tar.gz
+	scp -v -i /tmp/.ssh/rsync-files-conao3_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
 
 ##############################
 
