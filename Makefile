@@ -7,7 +7,7 @@ include Makefunc.mk
 all: clone
 
 clone: /tmp/emacs
-	git https://git.savannah.gnu.org/git/emacs.git /tmp/emacs
+	git clone https://git.savannah.gnu.org/git/emacs.git /tmp/emacs
 
 ##############################
 
