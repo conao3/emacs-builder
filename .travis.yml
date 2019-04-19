@@ -19,4 +19,4 @@ install:
 
 script:
   - make
-  - rsync -av -e "ssh -v -i ~/.ssh/rsync-files.conao3.com_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'" ../emacs-buildebr conao3@files.conao3.com:~/www/files
+  - rsync -av -e "ssh -v -i ~/.ssh/rsync-files.conao3.com_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'" ../emacs-builder conao3@files.conao3.com:~/www/files
