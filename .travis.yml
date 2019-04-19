@@ -16,4 +16,4 @@ install:
   - pwd
 
 script:
-  - make  
+  - make
