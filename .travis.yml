@@ -1,5 +1,9 @@
 language: generic
 
+cache:
+  directories:
+    - /tmp/emacs
+
 env:
   matrix:
 #     - EMACS_VERSION=23.4

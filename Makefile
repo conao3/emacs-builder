@@ -4,7 +4,10 @@ include Makefunc.mk
 
 ##################################################
 
-all:
+all: clone
+
+clone: /tmp/emacs
+	git://git.savannah.gnu.org/emacs.git /tmp/emacs
 
 ##############################
 
