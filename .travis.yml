@@ -14,12 +14,12 @@ env:
 
 install:
   - pwd
-  - ls -la ~/.ssh
-  - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out ~/.ssh/rsync-files-conao3_rsa -d
-  - ls -la ~/.ssh
-  - chmod 600 ~/.ssh/rsync-files-conao3_rsa
-  - ls -la ~/.ssh
+  - ls -la /tmp/.ssh
+  - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out /tmp/.ssh/rsync-files-conao3_rsa -d
+  - ls -la /tmp/.ssh
+  - chmod 600 /tmp/.ssh/rsync-files-conao3_rsa
+  - ls -la /tmp/.ssh
 
 script:
   - make
-  - rsync -av -e "ssh -v -i ~/.ssh/rsync-files-conao3_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'" ../emacs-builder conao3@files.conao3.com:~/www/files
+  - rsync -av -e "ssh -v -i /tmp/.ssh/rsync-files-conao3_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'" ../emacs-builder conao3@files.conao3.com:~/www/files
