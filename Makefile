@@ -8,10 +8,10 @@ SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 
 all: fetch
 
-fetch: /tmp/emacs
+fetch: /tmp/conao3-emacs
 	git fetch $^ --all
 
-/tmp/emacs:
+/tmp/conao3-emacs:
 	git clone https://git.savannah.gnu.org/git/emacs.git $@
 
 ##############################
