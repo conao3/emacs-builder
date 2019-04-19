@@ -24,4 +24,9 @@ test:
 
 ##############################
 
+push:
+	scp -rv -i /tmp/.ssh/rsync-files-conao3_rsa ../emacs-builder conao3@files.conao3.com:~/www/files/
+
+##############################
+
 clean:
