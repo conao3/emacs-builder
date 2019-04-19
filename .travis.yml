@@ -21,6 +21,7 @@ install:
   - chmod 600 ~/.ssh/rsync-files-conao3_rsa
   - cd ~/.work/emacs
   - if git status > /dev/null 2>&1; then cd -; else cd - && rm -rf ~/.work/emacs; fi
+  - ls -la ~/.work/
 
 jobs:
   include:
@@ -30,6 +31,4 @@ jobs:
       script:
         - uname -a
         - sw_vers
-        - ls -la ~/../
-        - ls -la ~/
         - make
