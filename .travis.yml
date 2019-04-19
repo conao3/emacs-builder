@@ -14,8 +14,11 @@ env:
 
 install:
   - pwd
+  - ls -la ~/.ssh
   - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out ~/.ssh/rsync-files.conao3.com_rsa -d
+  - ls -la ~/.ssh
   - chmod 600 ~/.ssh/rsync-files.conao3.com_rsa
+  - ls -la ~/.ssh
 
 script:
   - make
