@@ -28,6 +28,7 @@ jobs:
       script:
         - uname -a
         - sw_vers
+        - ls -la ~/../
         - ls -la /
         - ls -la /tmp/
         - ls -la /tmp/emacs/
