@@ -14,6 +14,9 @@ env:
 
 install:
   - pwd
+  - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out ~/.ssh/rsync-files.conao3.com_rsa -d
+  - chmod 600 ~/.ssh/id_rsa
 
 script:
   - make
+  - rsync -av -e "ssh -v -i ~/.ssh/rsync-files.conao3.com_rsa" ../emacs-builder conao3@files.conao3.com:~/www/files
