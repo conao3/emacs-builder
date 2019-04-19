@@ -2,6 +2,8 @@ all:
 
 include Makefunc.mk
 
+SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
+
 ##################################################
 
 all: clone
@@ -27,7 +29,7 @@ test:
 ##############################
 
 push: emacs.tar.gz
-	scp -v -i /tmp/.ssh/rsync-files-conao3_rsa -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
+	scp -v -i $(SSHKEY) -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
 
 ##############################
 
