@@ -53,7 +53,7 @@ addons:
     packages:
       - libxml2
 
-script:
+install:
   - uname -a
   - sw_vers
   - mkdir -p $HOME/local
