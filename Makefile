@@ -1,10 +1,12 @@
 all:
 
 include Makefunc.mk
+
 ROOTDIR := $(shell pwd)
 
-SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
+SSHKEY        ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
+
 DIRS := .make .source .build .work .dist
 
 DATE       := $(shell date +%Y-%m-%d)
