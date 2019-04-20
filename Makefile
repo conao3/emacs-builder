@@ -16,10 +16,12 @@ DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
 
 all: $(DIRS) build
 
-build: $(EMACS_VERSION:%=.build/emacs-%)
-
 $(DIRS):
 	mkdir -p $@
+
+##############################
+
+build: $(EMACS_VERSION:%=.build/emacs-%)
 
 configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/$@
 .build/emacs-%: .work/emacs-%
