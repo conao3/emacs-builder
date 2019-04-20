@@ -56,6 +56,14 @@ push: $(EMACS_VERSION:%=.make/push-emacs-%)
 
 ##############################
 
+# for convenience
+rsync: dist
+	rsync -aP .dist/ \
+	  -e "ssh -i $(SSHKEY) -v -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'" \
+	  sakura:~/www/files/emacs-builder
+
+##############################
+
 clean-dist:
 	rm -rf $(filter-out .source,$(DIRS))
 
