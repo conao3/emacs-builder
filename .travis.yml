@@ -33,6 +33,8 @@ jobs:
     - stage: "macOS"
       os: osx
       osx_image: xcode10.2
+      before_script:
+        - xcode-select --install
       script:
         - uname -a
         - sw_vers
