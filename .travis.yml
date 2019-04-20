@@ -21,7 +21,6 @@ before_install:
   - openssl aes-256-cbc
       -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv
       -in .travis_rsa.enc -out $SSHKEY -d
-  - ls -la .ssh
   - chmod 600 $SSHKEY
 
 jobs:
