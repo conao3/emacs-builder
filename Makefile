@@ -54,3 +54,4 @@ push: emacs.tar.gz
 ##############################
 
 clean:
+	rm -rf $(DIRS)
