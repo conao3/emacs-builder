@@ -1,6 +1,7 @@
 all:
 
 include Makefunc.mk
+ROOTDIR := $(shell pwd)
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
@@ -17,7 +18,7 @@ build: $(EMACS_VERSION:%=.make-build-emacs-%)
 $(DIRS):
 	mkdir -p $@
 
-distdir=$(shell pwd)/.dist/emacs-$*
+distdir=$(ROOTDIR)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
 #	cd $^ && git reset $(EMACS_VERSION) --hard
 #	cd $^ && ./autogen.sh
