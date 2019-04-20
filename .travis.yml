@@ -27,6 +27,6 @@ jobs:
       install:
         - uname -a
         - sw_vers
-        - make -j
+        - make
       script:
-        - make push -j
+        - make push
