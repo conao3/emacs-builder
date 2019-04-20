@@ -3,4 +3,6 @@
 
 # dest folder
 /.make*
+/.source
 /.work
+/.dist

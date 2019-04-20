@@ -4,7 +4,7 @@ include Makefunc.mk
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= master
-DIRS := .work .dist
+DIRS := .source .work .dist
 
 ##################################################
 
@@ -19,9 +19,9 @@ $(DIRS):
 	cp -a .work/emacs $@
 	cd $@ && git reset $(EMACS_VERSION) --hard
 	cd $@ && ./autogen.sh
-	cd $@ && ./configure
+	cd $@ && ./configure --prefix=$(shell pwd)/.dist/emacs-$*
 	cd $@ && $(MAKE)
-#	cd $@ && make
+	cd $@ && $(MAKE) install
 
 fetch: .work/emacs
 	cd $< && git fetch --all
