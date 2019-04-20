@@ -20,33 +20,19 @@ $(DIRS):
 
 configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
+	cd $< && if [ -e autogen.sh ]; then ./autogen.sh; fi
 	cd $< && ./configure $(configure-options)
 	cd $< && $(MAKE)
 	cd $< && $(MAKE) install
+
+.work/emacs-master:
+	git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git $@
 
 .work/emacs-%: .source/emacs-%.tar.gz
 	tar -zxf $< -C $(@D)
 
 .source/emacs-%.tar.gz:
 	cd $(@D) && curl -O https://ftp.gnu.org/pub/gnu/emacs/$(@F)
-
-fetch: .work/emacs
-	cd $< && git fetch --all
-
-.work/emacs:
-	git clone https://git.savannah.gnu.org/git/emacs.git $@
-
-##############################
-
-install:
-uninstall:
-
-##############################
-
-push:
-emacs.tar.gz:
-	echo emacs > $@
-test:
 
 ##############################
 
