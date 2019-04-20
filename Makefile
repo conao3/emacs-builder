@@ -3,25 +3,30 @@ all:
 include Makefunc.mk
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
-EMACS_VERSION ?= master
+EMACS_VERSION ?= emacs-26.2
 DIRS := .source .work .dist
 
 ##################################################
 
-all: build
+all: $(DIRS) build
 
-build: $(DIRS) $(EMACS_VERSION:%=.work/emacs-%)
+build: $(EMACS_VERSION:%=.make-build-%)
 
 $(DIRS):
 	mkdir -p $@
 
-.work/emacs-%: fetch
-	cp -a .work/emacs $@
-	cd $@ && git reset $(EMACS_VERSION) --hard
-	cd $@ && ./autogen.sh
+.make-build-%: .work/%
+#	cd $@ && git reset $(EMACS_VERSION) --hard
+#	cd $@ && ./autogen.sh
 	cd $@ && ./configure --prefix=$(shell pwd)/.dist/emacs-$*
 	cd $@ && $(MAKE)
 	cd $@ && $(MAKE) install
+
+.work/%: .source/%.tar.gz
+	tar -zxf $^ -C $@
+
+.source/%.tar.gz:
+	curl https://ftp.gnu.org/pub/gnu/emacs/$(@F) -o $@
 
 fetch: .work/emacs
 	cd $< && git fetch --all
