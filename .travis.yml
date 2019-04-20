@@ -33,8 +33,8 @@ jobs:
       install:
         - uname -a
         - sw_vers
-        - make
+        - make -j
       script:
-        - make push
+        - make push -j
         - ls -la .dist
         - ls -la .dist/emacs-26.2
