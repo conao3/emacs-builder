@@ -8,6 +8,8 @@ DIRS := .source .work .dist
 
 ##################################################
 
+.PRECIOUS: .source/emacs-%.tar.gz .work/emacs-%
+
 all: $(DIRS) build
 
 build: $(EMACS_VERSION:%=.make-build-emacs-%)
@@ -15,10 +17,12 @@ build: $(EMACS_VERSION:%=.make-build-emacs-%)
 $(DIRS):
 	mkdir -p $@
 
+distdir=$(shell pwd)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
 #	cd $^ && git reset $(EMACS_VERSION) --hard
 #	cd $^ && ./autogen.sh
-	cd $^ && ./configure --without-x --with-ns --with-modules --prefix=$(shell pwd)/.dist/emacs-$*
+	mkdir $(distdir)
+	cd $^ && ./configure --without-x --with-ns --with-modules --prefix=$(distdir)
 	cd $^ && $(MAKE)
 	cd $^ && $(MAKE) install
 
