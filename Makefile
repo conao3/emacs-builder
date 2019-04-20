@@ -16,17 +16,17 @@ $(DIRS):
 	mkdir -p $@
 
 .make-build-%: .work/%
-#	cd $@ && git reset $(EMACS_VERSION) --hard
-#	cd $@ && ./autogen.sh
-	cd $@ && ./configure --prefix=$(shell pwd)/.dist/emacs-$*
-	cd $@ && $(MAKE)
-	cd $@ && $(MAKE) install
+#	cd $^ && git reset $(EMACS_VERSION) --hard
+#	cd $^ && ./autogen.sh
+	cd $^ && ./configure --prefix=$(shell pwd)/.dist/$*
+	cd $^ && $(MAKE)
+	cd $^ && $(MAKE) install
 
 .work/%: .source/%.tar.gz
-	tar -zxf $^ -C $@
+	tar -zxf $^ -C $(@D)
 
 .source/%.tar.gz:
-	curl https://ftp.gnu.org/pub/gnu/emacs/$(@F) -o $@
+	cd $(@D) && curl -O https://ftp.gnu.org/pub/gnu/emacs/$(@F)
 
 fetch: .work/emacs
 	cd $< && git fetch --all
