@@ -3,10 +3,17 @@ all:
 include Makefunc.mk
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
+EMACS_VERSION ?= master
 
 ##################################################
 
-all: fetch
+all: build
+
+build: $(EMACS_VERSION:%=~/.work/emacs-%)
+
+$(EMACS_VERSION:%=~/.work/emacs-%): fetch
+	cp -p -r ~/.work/emacs $@
+#	cd $@ && make
 
 fetch: ~/.work/emacs
 	cd $< && git fetch --all
