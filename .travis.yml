@@ -3,13 +3,7 @@ language: generic
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
-  matrix:
-    - EMACS_VERSION=23.4
-    - EMACS_VERSION=24.5
-    - EMACS_VERSION=25.3
-    - EMACS_VERSION=26.1
-    - EMACS_VERSION=26.2
-    - EMACS_VERSION=master
+    - EMACS_VERSION="23.4 24.5 25.3 26.1 26.2 master"
 
 addons:
   homebrew:
@@ -25,7 +19,7 @@ before_install:
 
 jobs:
   include:
-    - stage: "macOS"
+    - stage: "Mac build"
       os: osx
       osx_image: xcode10.2
       env:
