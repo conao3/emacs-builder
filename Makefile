@@ -21,7 +21,7 @@ distdir=$(shell pwd)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
 #	cd $^ && git reset $(EMACS_VERSION) --hard
 #	cd $^ && ./autogen.sh
-	mkdir $(distdir)
+	mkdir -p $(distdir)
 	cd $^ && ./configure --without-x --with-ns --with-modules --prefix=$(distdir)
 	cd $^ && $(MAKE)
 	cd $^ && $(MAKE) install
