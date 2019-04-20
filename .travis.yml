@@ -36,5 +36,3 @@ jobs:
         - make -j
       script:
         - make push -j
-        - ls -la .dist
-        - ls -la .dist/emacs-26.2
