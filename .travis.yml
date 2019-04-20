@@ -1,43 +1,68 @@
 language: generic
 
-cache:
-  directories:
-    - ~/build/conao3/emacs-builder/.source
+# cache:
+#   directories:
+#     - ~/build/conao3/emacs-builder/.source
+#
+# env:
+#   global:
+#     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
+#   matrix:
+#     - EMACS_VERSION=26.2
+# #     - EMACS_VERSION=23.4
+# #     - EMACS_VERSION=24.5
+# #     - EMACS_VERSION=25.3
+# #     - EMACS_VERSION=26.1
+# #     - EMACS_VERSION=master
+#
+# addons:
+#   homebrew:
+#     packages:
+#       - libxml2
+#
+# install:
+#   - pwd
+#   - mkdir -p ~/.ssh
+#   - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out ~/.ssh/rsync-files-conao3_rsa -d
+#   - chmod 600 ~/.ssh/rsync-files-conao3_rsa
+#   # - if git status > /dev/null 2>&1; then cd -; else cd - && rm -rf ~/.work/emacs; fi
+#   - ls -la ~/build/conao3/emacs-builder/.source
+#
+# jobs:
+#   include:
+#     - stage: "macOS"
+#       os: osx
+#       osx_image: xcode10.2
+#       env:
+#         - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
+#       script:
+#         - uname -a
+#         - sw_vers
+#         - make
+#         - ls -la .dist
+#         - ls -la .dist/emacs-26.2
+
+os: osx
+osx_image: xcode10.2
 
 env:
-  global:
-    - SSHKEY=~/.ssh/rsync-files-conao3_rsa
-  matrix:
-    - EMACS_VERSION=26.2
-#     - EMACS_VERSION=23.4
-#     - EMACS_VERSION=24.5
-#     - EMACS_VERSION=25.3
-#     - EMACS_VERSION=26.1
-#     - EMACS_VERSION=master
+  - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
 
 addons:
   homebrew:
     packages:
       - libxml2
 
-install:
-  - pwd
-  - mkdir -p ~/.ssh
-  - openssl aes-256-cbc -K $encrypted_6932eec903aa_key -iv $encrypted_6932eec903aa_iv -in .travis_rsa.enc -out ~/.ssh/rsync-files-conao3_rsa -d
-  - chmod 600 ~/.ssh/rsync-files-conao3_rsa
-  # - if git status > /dev/null 2>&1; then cd -; else cd - && rm -rf ~/.work/emacs; fi
-  - ls -la ~/build/conao3/emacs-builder/.source
-
-jobs:
-  include:
-    - stage: "macOS"
-      os: osx
-      osx_image: xcode10.2
-      env:
-        - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
-      script:
-        - uname -a
-        - sw_vers
-        - make
-        - ls -la .dist
-        - ls -la .dist/emacs-26.2
+script:
+  - uname -a
+  - sw_vers
+  - mkdir -p $HOME/local
+  - ls -la $HOME/local
+  - curl -O https://ftp.gnu.org/pub/gnu/emacs/emacs-26.2.tar.gz
+  - tar xf emacs-26.2.tar.gz
+  - cd emacs-26.2
+  - ./autogen.sh
+  - ./configure --prefix=$HOME/local
+  - make
+  - make install
+  - ls -la $HOME/local
