@@ -5,7 +5,7 @@ ROOTDIR := $(shell pwd)
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
-DIRS := .source .work .dist
+DIRS := .source .build .work .dist
 
 ##################################################
 
@@ -13,13 +13,13 @@ DIRS := .source .work .dist
 
 all: $(DIRS) build
 
-build: $(EMACS_VERSION:%=.make-build-emacs-%)
+build: $(EMACS_VERSION:%=.build/emacs-%)
 
 $(DIRS):
 	mkdir -p $@
 
-configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/.dist/emacs-$*
-.make-build-emacs-%: .work/emacs-%
+configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/$@
+.build/emacs-%: .work/emacs-%
 	cd $< && if [ -e autogen.sh ]; then ./autogen.sh; fi
 	cd $< && ./configure $(configure-options)
 	cd $< && $(MAKE)
@@ -36,10 +36,18 @@ configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/.d
 
 ##############################
 
-push: emacs.tar.gz
+push: $(EMACS_VERSION:%=.make-push-emacs-%)
+
+.make-push-emacs-%: .dist/emacs-%.tar.gz
 	scp -v -i $(SSHKEY) -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
 
+.dist/emacs-%.tar.gz: .build/emacs-%
+	tar -zcf $@ $^
+
 ##############################
+
+clean-dist:
+	rm -rf $(filter-out .source,$(DIRS))
 
 clean:
 	rm -rf $(DIRS)
