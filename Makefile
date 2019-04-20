@@ -43,7 +43,7 @@ uninstall:
 
 ##############################
 
-dist: emacs.tar.gz
+push:
 emacs.tar.gz:
 	echo emacs > $@
 test:

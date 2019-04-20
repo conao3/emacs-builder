@@ -29,9 +29,11 @@ jobs:
       osx_image: xcode10.2
       env:
         - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
-      script:
+      install:
         - uname -a
         - sw_vers
         - make
+      script:
+        - make push
         - ls -la .dist
         - ls -la .dist/emacs-26.2
