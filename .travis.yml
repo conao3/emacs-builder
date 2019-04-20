@@ -15,6 +15,11 @@ env:
 #     - EMACS_VERSION=26.1
 #     - EMACS_VERSION=master
 
+addons:
+  homebrew:
+    packages:
+      - libxml2
+
 install:
   - pwd
   - mkdir -p ~/.ssh
@@ -28,10 +33,6 @@ jobs:
     - stage: "macOS"
       os: osx
       osx_image: xcode10.2
-      addons:
-        homebrew:
-          packages:
-            - ibxml2
       script:
         - uname -a
         - sw_vers
