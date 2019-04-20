@@ -16,7 +16,7 @@ DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
 
 .PRECIOUS: .source/emacs-%.tar.gz .work/emacs-%
 
-all: $(DIRS) build
+all: $(DIRS) dist
 
 $(DIRS):
 	mkdir -p $@
