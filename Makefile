@@ -18,15 +18,11 @@ build: $(EMACS_VERSION:%=.make-build-emacs-%)
 $(DIRS):
 	mkdir -p $@
 
-distdir=$(ROOTDIR)/.dist/emacs-$*
+configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
-	mkdir -p $(distdir)
-	cd $< && ./configure --without-x --with-ns --with-modules --prefix=$(distdir)
+	cd $< && ./configure $(configure-options)
 	cd $< && $(MAKE)
 	cd $< && $(MAKE) install
-
-#cd $^ && git reset $(EMACS_VERSION) --hard
-#cd $^ && ./autogen.sh
 
 .work/emacs-%: .source/emacs-%.tar.gz
 	tar -zxf $< -C $(@D)
