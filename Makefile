@@ -9,16 +9,19 @@ EMACS_VERSION ?= master
 
 all: build
 
-build: $(EMACS_VERSION:%=~/.work/emacs-%)
+build: .work $(EMACS_VERSION:%=.work/emacs-%)
 
-$(EMACS_VERSION:%=~/.work/emacs-%): fetch
-	cp -p -r ~/.work/emacs $@
+.work:
+	mkdir -p $@
+
+.work/emacs-%: fetch
+	cp -a .work/emacs $@
 #	cd $@ && make
 
-fetch: ~/.work/emacs
+fetch: .work/emacs
 	cd $< && git fetch --all
 
-~/.work/emacs:
+.work/emacs:
 	git clone https://git.savannah.gnu.org/git/emacs.git $@
 
 ##############################
