@@ -20,15 +20,16 @@ $(DIRS):
 
 distdir=$(ROOTDIR)/.dist/emacs-$*
 .make-build-emacs-%: .work/emacs-%
-#	cd $^ && git reset $(EMACS_VERSION) --hard
-#	cd $^ && ./autogen.sh
 	mkdir -p $(distdir)
-	cd $^ && ./configure --without-x --with-ns --with-modules --prefix=$(distdir)
-	cd $^ && $(MAKE)
-	cd $^ && $(MAKE) install
+	cd $< && ./configure --without-x --with-ns --with-modules --prefix=$(distdir)
+	cd $< && $(MAKE)
+	cd $< && $(MAKE) install
+
+#cd $^ && git reset $(EMACS_VERSION) --hard
+#cd $^ && ./autogen.sh
 
 .work/emacs-%: .source/emacs-%.tar.gz
-	tar -zxf $^ -C $(@D)
+	tar -zxf $< -C $(@D)
 
 .source/emacs-%.tar.gz:
 	cd $(@D) && curl -O https://ftp.gnu.org/pub/gnu/emacs/$(@F)
