@@ -5,7 +5,7 @@ ROOTDIR := $(shell pwd)
 
 SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
-DIRS := .source .build .work .dist
+DIRS := .make .source .build .work .dist
 
 DATE       := $(shell date +%Y-%m-%d)
 DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
@@ -48,10 +48,11 @@ dist: $(EMACS_VERSION:%=.dist/emacs-%.tar.gz)
 
 ##############################
 
-push: $(EMACS_VERSION:%=.make-push-emacs-%)
+push: $(EMACS_VERSION:%=.make/push-emacs-%)
 
-.make-push-emacs-%: .dist/emacs-%.tar.gz
+.make/push-emacs-%: .dist/emacs-%.tar.gz
 	scp -v -i $(SSHKEY) -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
+	touch $@
 
 ##############################
 
