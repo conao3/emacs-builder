@@ -7,6 +7,9 @@ SSHKEY ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
 DIRS := .source .build .work .dist
 
+DATE       := $(shell date +%Y-%m-%d)
+DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
+
 ##################################################
 
 .PRECIOUS: .source/emacs-%.tar.gz .work/emacs-%
@@ -36,13 +39,17 @@ configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/$@
 
 ##############################
 
+dist: $(EMACS_VERSION:%=.dist/emacs-%.tar.gz)
+
+.dist/emacs-%.tar.gz: .build/emacs-%
+	tar -zcf $@ $^
+
+##############################
+
 push: $(EMACS_VERSION:%=.make-push-emacs-%)
 
 .make-push-emacs-%: .dist/emacs-%.tar.gz
 	scp -v -i $(SSHKEY) -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
-
-.dist/emacs-%.tar.gz: .build/emacs-%
-	tar -zcf $@ $^
 
 ##############################
 
