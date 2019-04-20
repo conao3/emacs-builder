@@ -18,7 +18,7 @@ $(DIRS):
 .make-build-emacs-%: .work/emacs-%
 #	cd $^ && git reset $(EMACS_VERSION) --hard
 #	cd $^ && ./autogen.sh
-	cd $^ && ./configure --prefix=$(shell pwd)/.dist/emacs-$*
+	cd $^ && ./configure --without-x --with-ns --with-modules --prefix=$(shell pwd)/.dist/emacs-$*
 	cd $^ && $(MAKE)
 	cd $^ && $(MAKE) install
 
