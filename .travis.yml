@@ -3,7 +3,7 @@ language: generic
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
-    - EMACS_VERSION="23.4 24.5 25.3 26.1 26.2 master"
+    - EMACS_VERSION="24.5 25.3 26.1 26.2 master"
 
 addons:
   homebrew:
