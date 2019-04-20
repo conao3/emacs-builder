@@ -51,7 +51,9 @@ dist: $(EMACS_VERSION:%=.dist/emacs-%.tar.gz)
 push: $(EMACS_VERSION:%=.make/push-emacs-%)
 
 .make/push-emacs-%: .dist/emacs-%.tar.gz
-	scp -v -i $(SSHKEY) -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' emacs.tar.gz conao3@files.conao3.com:~/www/files/
+	scp -v -i $(SSHKEY) \
+	  -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' \
+	  $^ conao3@files.conao3.com:~/www/files/emacs-builder/
 	touch $@
 
 ##############################
