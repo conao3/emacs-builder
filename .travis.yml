@@ -28,6 +28,10 @@ jobs:
     - stage: "macOS"
       os: osx
       osx_image: xcode10.2
+      addons:
+        homebrew:
+          packages:
+            - ibxml2
       script:
         - uname -a
         - sw_vers
