@@ -30,6 +30,7 @@ jobs:
       osx_image: xcode10.2
       env: EMACS_VERSION="24.5"
       install: make
+      script: make push
     - <<: *mojave-build
       env: EMACS_VERSION="25.3"
     - <<: *mojave-build
@@ -38,7 +39,5 @@ jobs:
       env: EMACS_VERSION="26.2"
     - <<: *mojave-build
       env:
-        allow_failures: EMACS_VERSION="master"
-    - stage: "push"
-      env: skip
-      script: make rsync
+        allow_failures:
+          - EMACS_VERSION="master"
