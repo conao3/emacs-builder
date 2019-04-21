@@ -3,12 +3,18 @@ language: generic
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
-    - EMACS_VERSION="24.5 25.3 26.1 26.2 master"
+    - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
+  matrix:
+    - EMACS_VERSION="24.5"
+    - EMACS_VERSION="25.3"
+    - EMACS_VERSION="26.1"
+    - EMACS_VERSION="26.2"
+    - EMACS_VERSION="master"
 
 addons:
   homebrew:
     packages:
-      - libxml2                 # fix notfound libxml/tree.h issue
+      - libxml2                 # fix issue; not found libxml/tree.h
       - texinfo                 # Emacs-27's info required latext texinfo
 
 before_install:
@@ -18,23 +24,20 @@ before_install:
       -in .travis_rsa.enc -out $SSHKEY -d
   - chmod 600 $SSHKEY
 
+install:
+  - make
+
+# script:
+#   - make push
+
+os: mac
+
 jobs:
   include:
-    - stage: "Mac build (Mojave)"
-      os: osx
+    - stage "Mojave"
       osx_image: xcode10.2
-      env:
-        global:
-          - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
-        matrix:
-          - EMACS_VERSION="24.5"
-          - EMACS_VERSION="25.3"
-          - EMACS_VERSION="26.1"
-          - EMACS_VERSION="26.2"
-          - EMACS_VERSION="master"
-      install:
-        - uname -a
-        - sw_vers
-        - make
-      script:
-        - make push
+    - stage "High Sierra"
+      osx_image: xcode10.1
+    - stage "deploy"
+      install: skip
+      script: make rsync
