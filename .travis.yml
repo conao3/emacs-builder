@@ -1,23 +1,10 @@
 language: generic
+dist: precise
 
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
     - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
-  matrix:
-    - EMACS_VERSION="24.5"
-    - EMACS_VERSION="25.3"
-    - EMACS_VERSION="26.1"
-    - EMACS_VERSION="26.2"
-    allow_failures:
-      - EMACS_VERSION="master"
-
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2      # Mojave
-    - os: osx
-      osx_image: xcode10.1      # High sierra
 
 addons:
   homebrew:
@@ -35,11 +22,23 @@ before_install:
       -in .travis_rsa.enc -out $SSHKEY -d
   - chmod 600 $SSHKEY
 
-install:
-  - make
-
-# script:
-#   - make push
-
-after_success:
-  - make rsync
+jobs:
+  include:
+    - &mojave-build
+      stage: "mojave build"
+      os: osx
+      osx_image: xcode10.2
+      env: EMACS_VERSION="24.5"
+      install: make
+    - <<: *mojave-build
+      env: EMACS_VERSION="25.3"
+    - <<: *mojave-build
+      env: EMACS_VERSION="26.1"
+    - <<: *mojave-build
+      env: EMACS_VERSION="26.2"
+    - <<: *mojave-build
+      env:
+        allow_failures: EMACS_VERSION="master"
+    - stage: "push"
+      env: skip
+      script: make rsync
