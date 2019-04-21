@@ -34,10 +34,10 @@ os: mac
 
 jobs:
   include:
-    - stage "Mojave"
+    - stage: "Mojave"
       osx_image: xcode10.2
-    - stage "High Sierra"
+    - stage: "High Sierra"
       osx_image: xcode10.1
-    - stage "deploy"
+    - stage: "deploy"
       install: skip
       script: make rsync
