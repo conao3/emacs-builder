@@ -23,6 +23,9 @@ addons:
     packages:
       - libxml2                 # fix issue; not found libxml/tree.h
       - texinfo                 # Emacs-27's info required latext texinfo
+  apt:
+    packages:
+      - texinfo
 
 before_install:
   - pwd
