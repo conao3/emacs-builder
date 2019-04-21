@@ -11,6 +11,13 @@ env:
     - EMACS_VERSION="26.2"
     - EMACS_VERSION="master"
 
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2      # Mojave
+    - os: osx
+      osx_image: xcode10.1      # High sierra
+
 addons:
   homebrew:
     packages:
@@ -30,14 +37,5 @@ install:
 # script:
 #   - make push
 
-os: mac
-
-jobs:
-  include:
-    - stage: "Mojave"
-      osx_image: xcode10.2
-    - stage: "High Sierra"
-      osx_image: xcode10.1
-    - stage: "deploy"
-      install: skip
-      script: make rsync
+after_success:
+  - make rsync
