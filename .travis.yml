@@ -1,17 +1,17 @@
 language: generic
-dist: precise
+
+os: osx
+osx_image: xcode10.2            # macOSX Mojave
 
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
+    - EMACS_VERSION="master"
 
 addons:
   homebrew:
     packages:
       - texinfo                 # Emacs-27's info required latext texinfo
-  apt:
-    packages:
-      - texinfo
 
 before_install:
   - pwd
@@ -20,24 +20,11 @@ before_install:
       -in .travis_rsa.enc -out $SSHKEY -d
   - chmod 600 $SSHKEY
 
-jobs:
-  include:
-    - &mojave-build
-      stage: "mojave build"
-      os: osx
-      osx_image: xcode10.2
-      env: EMACS_VERSION="24.5"
-      install:
-        # fix issue; not found libxml/tree.h
-        # see https://github.com/caldwell/build-emacs#xcode-command-line-tools
-        - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-        - make
-      script: make push
-    - <<: *mojave-build
-      env: EMACS_VERSION="25.3"
-    - <<: *mojave-build
-      env: EMACS_VERSION="26.1"
-    - <<: *mojave-build
-      env: EMACS_VERSION="26.2"
-    - <<: *mojave-build
-      env: EMACS_VERSION="master"
+install:
+  # fix issue; not found libxml/tree.h
+  # see https://github.com/caldwell/build-emacs#xcode-command-line-tools
+  - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+  - make
+
+script:
+  - make push
