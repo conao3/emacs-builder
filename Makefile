@@ -7,14 +7,15 @@ ROOTDIR := $(shell pwd)
 SSHKEY        ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
 
-DIRS := .make .source .build .work .dist
+MAKEDIRS := source build work dist push
+DIRS := $(MAKEDIRS:%=.make/%)
 
 DATE       := $(shell date +%Y-%m-%d)
 DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
 
 ##################################################
 
-.PRECIOUS: .source/emacs-%.tar.gz .work/emacs-%
+.PRECIOUS: .make/work/emacs-% .make/dist/% .make/push/%
 
 all: $(DIRS) dist
 
@@ -23,36 +24,36 @@ $(DIRS):
 
 ##############################
 
-build: $(EMACS_VERSION:%=.build/emacs-%)
+build: $(EMACS_VERSION:%=.make/build/emacs-%)
 
 configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/$@
-.build/emacs-%: .work/emacs-%
+.make/build/emacs-%: .make/work/emacs-%
 	cd $< && if [ -e autogen.sh ]; then ./autogen.sh; fi
 	cd $< && ./configure $(configure-options)
 	cd $< && $(MAKE)
 	cd $< && $(MAKE) install
 
-.work/emacs-master:
+.make/work/emacs-master:
 	git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git $@
 
-.work/emacs-%: .source/emacs-%.tar.gz
+.make/work/emacs-%: .make/source/emacs-%.tar.gz
 	tar -zxf $< -C $(@D)
 
-.source/emacs-%.tar.gz:
+.make/source/emacs-%.tar.gz:
 	cd $(@D) && curl -O https://ftp.gnu.org/pub/gnu/emacs/$(@F)
 
 ##############################
 
-dist: $(EMACS_VERSION:%=.dist/emacs-%.tar.gz)
+dist: $(EMACS_VERSION:%=.make/dist/emacs-%.tar.gz)
 
-.dist/emacs-%.tar.gz: .build/emacs-%
+.make/dist/emacs-%.tar.gz: .make/build/emacs-%
 	tar -zcf $@ $^
 
 ##############################
 
-push: $(EMACS_VERSION:%=.make/push-emacs-%)
+push: $(EMACS_VERSION:%=.make/push/push-emacs-%)
 
-.make/push-emacs-%: .dist/emacs-%.tar.gz
+.make/push/push-emacs-%: .make/dist/emacs-%.tar.gz
 	scp -v -i $(SSHKEY) \
 	  -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null' \
 	  $^ conao3@files.conao3.com:~/www/files/emacs-builder/
@@ -69,7 +70,7 @@ rsync: dist
 ##############################
 
 clean-dist:
-	rm -rf $(filter-out .source,$(DIRS))
+	rm -rf $(filter-out .make/source,$(DIRS))
 
 clean:
 	rm -rf $(DIRS)

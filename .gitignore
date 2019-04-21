@@ -2,8 +2,4 @@
 # http://dotfiles.conao3.com/gitignore
 
 # dest folder
-/.make*
-/.source
-/.work
-/.dist
-/.build
+/.make
