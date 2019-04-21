@@ -4,12 +4,10 @@ dist: precise
 env:
   global:
     - SSHKEY=~/.ssh/rsync-files-conao3_rsa
-    - PKG_CONFIG_PATH="/usr/local/opt/libxml2/lib/pkgconfig"
 
 addons:
   homebrew:
     packages:
-      - libxml2                 # fix issue; not found libxml/tree.h
       - texinfo                 # Emacs-27's info required latext texinfo
   apt:
     packages:
@@ -29,7 +27,11 @@ jobs:
       os: osx
       osx_image: xcode10.2
       env: EMACS_VERSION="24.5"
-      install: make
+      install:
+        # fix issue; not found libxml/tree.h
+        # see https://github.com/caldwell/build-emacs#xcode-command-line-tools
+        - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+        - make
       script: make push
     - <<: *mojave-build
       env: EMACS_VERSION="25.3"
