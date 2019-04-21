@@ -38,6 +38,5 @@ jobs:
     - <<: *mojave-build
       env: EMACS_VERSION="26.2"
     - <<: *mojave-build
-      env:
-        allow_failures:
-          - EMACS_VERSION="master"
+      allow_failures:
+        env: EMACS_VERSION="master"
