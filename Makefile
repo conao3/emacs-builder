@@ -7,7 +7,7 @@ ROOTDIR := $(shell pwd)
 SSHKEY        ?= ~/.ssh/rsync-files-conao3_rsa
 EMACS_VERSION ?= 26.2
 
-MAKEDIRS := source build work dist push
+MAKEDIRS := source build dist push
 DIRS := $(MAKEDIRS:%=.make/%)
 
 DATE       := $(shell date +%Y-%m-%d)
@@ -15,7 +15,7 @@ DATEDETAIL := $(shell date +%Y-%m-%d:%H-%M-%S)
 
 ##################################################
 
-.PRECIOUS: .make/work/emacs-% .make/dist/% .make/push/%
+.PRECIOUS: .make/build/emacs-% .make/build/emacs-master .make/build/emacs-% .make/source/emacs-master .make/source/emacs-%.tar.gz
 
 all: $(DIRS) dist
 
@@ -27,20 +27,26 @@ $(DIRS):
 build: $(EMACS_VERSION:%=.make/build/emacs-%)
 
 configure-options=--with-ns --with-modules --prefix=$(ROOTDIR)/$@
-.make/build/emacs-%: .make/work/emacs-%
-	cd $< && if [ -e autogen.sh ]; then ./autogen.sh; fi
-	cd $< && ./configure $(configure-options)
-	cd $< && $(MAKE)
-	cd $< && $(MAKE) install
 
-.make/work/emacs-master:
+.make/build/emacs-master: .make/source/emacs-%
+	cp -rf $< $@
+	cd $@ && if [ -e autogen.sh ]; then ./autogen.sh; fi
+	cd $@ && ./configure $(configure-options)
+	$(MAKE) -C $@
+	$(MAKE) install -C $@
+
+.make/build/emacs-%: .make/source/emacs-%.tar.gz
+	tar -zxf $< -C $(@D)
+	cd $@ && if [ -e autogen.sh ]; then ./autogen.sh; fi
+	cd $@ && ./configure $(configure-options)
+	$(MAKE) -C $@
+	$(MAKE) install -C $@
+
+.make/source/emacs-master:
 	git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git $@
 
-.make/work/emacs-%: .make/source/emacs-%.tar.gz
-	tar -zxf $< -C $(@D)
-
 .make/source/emacs-%.tar.gz:
-	cd $(@D) && curl -O https://ftp.gnu.org/pub/gnu/emacs/$(@F)
+	curl -L https://ftp.gnu.org/pub/gnu/emacs/$(@F) > $@
 
 ##############################
 
