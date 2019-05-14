@@ -26,7 +26,7 @@ $(DIRS):
 
 build: $(EMACS_VERSION:%=.make/build/emacs-%)
 
-configure-options=--without-x --without-ns --with-modules --prefix=$(ROOTDIR)/$@
+configure-options=--with-ns --with-modules --prefix=$(ROOTDIR)/$@
 .make/build/emacs-%: .make/work/emacs-%
 	cd $< && if [ -e autogen.sh ]; then ./autogen.sh; fi
 	cd $< && ./configure $(configure-options)
